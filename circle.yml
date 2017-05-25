@@ -1,8 +1,20 @@
-deployment:
-production:
-branch: master
-commands:
-- ./deploy_prod.sh
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker info
+    - docker build --rm=false -t chary/jenkins .
+
 test:
-override:
-- echo 'no tests, just say us Okay!'
+  override:
+    - docker run -d -p 8080:8080 chary/jenkins; sleep 10
+    - curl --retry 10 --retry-delay 5 -v http://localhost:8080
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push chary/jenkins
