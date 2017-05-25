@@ -1,5 +1,5 @@
 FROM        debian
-MAINTAINER  Love Nyberg "love.nyberg@lovemusic.se"
+MAINTAINER  "chary"
 
 # Update the package repository
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \ 
